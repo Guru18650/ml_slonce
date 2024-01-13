@@ -7,11 +7,11 @@
     <StackLayout Padding="5" x:Name="sl">
         <Button Text="Pobierz z GPS" x:Name="gD" Clicked="gD_Clicked" Margin="10"/>
         <Label Text="Długość geograficzna"/>
-        <Entry x:Name="lonE" Placeholder="40.5823"/>
+        <Entry x:Name="lonE" Placeholder="19.2056"/>
         <Label Text="Szerokość geograficzna"/>
-        <Entry x:Name="latE" Placeholder="19.2056"/>
-        <Button Text="Pobierz dane" Clicked="Button_Clicked" Margin="10"/>
-        <Label x:Name="lbl" FontSize="20" HorizontalTextAlignment="Center" Margin="10"/>
+        <Entry x:Name="latE" Placeholder="40.5823"/>
+        <Button Text="Oblicz" Clicked="Button_Clicked" Margin="10"/>
+        <Label x:Name="lbl" FontSize="15" HorizontalTextAlignment="Center" Margin="10"/>
     </StackLayout>
 
 </ContentPage>

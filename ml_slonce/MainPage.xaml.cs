@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Innovative.SolarCalculator;
 
 namespace ml_slonce
 {
@@ -43,21 +44,20 @@ namespace ml_slonce
 
         public async void Button_Clicked(object sender, EventArgs e)
         {
-                HttpClient client = new HttpClient();
-                string apikey = $"https://api.weatherapi.com/v1/astronomy.json?key=e7a040f9ef3d40a89f2214845241101&q={latE.Text},{lonE.Text}";
+            TimeZoneInfo cst = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+            SolarTimes solarTimes = new SolarTimes(DateTime.Now.Date, double.Parse(latE.Text), double.Parse(lonE.Text));
+            DateTime sunrise = solarTimes.Sunrise.ToUniversalTime();
+            DateTime sunset = solarTimes.Sunset.ToUniversalTime();
+
             try
             {
 
-                var response = await client.GetStringAsync(apikey);
-                var dynamicObject = JsonConvert.DeserializeObject<dynamic>(response)!;
-                DateTime sunrise = DateTime.Parse(DateTime.Now.ToString("d") + " " + dynamicObject.astronomy.astro.sunrise);
-                DateTime sunset = DateTime.Parse(DateTime.Now.ToString("d") + " " + dynamicObject.astronomy.astro.sunset);
                 TimeSpan DayLength = sunset - sunrise;
                 TimeSpan Day = new TimeSpan(24, 0, 0);
                 TimeSpan NightLength = Day - DayLength;
                 TimeSpan longDay = new TimeSpan(16, 46, 0);
                 TimeSpan shortDay = new TimeSpan(7, 20, 0);
-                string t = $"Wschód słońca: {sunrise.TimeOfDay.ToString()}\nZachód słońca: {sunset.TimeOfDay.ToString()}\nDługość dnia: {DayLength.ToString()}\nDługość nocy: {NightLength.ToString()}\nRóżnica od najdłuższego dnia: {(longDay-DayLength).ToString()}\nRóżnica od najkrótszego dnia: {(DayLength-shortDay).ToString()}\n\nPodawane w czasie lokalnym";
+                string t = $"Wschód słońca: {sunrise.TimeOfDay.ToString("hh':'mm':'ss''")}\nZachód słońca: {sunset.TimeOfDay.ToString("hh':'mm':'ss''")}\nDługość dnia: {DayLength.ToString("h'h 'm'm 's's'")}\nDługość nocy: {NightLength.ToString("h'h 'm'm 's's'")}\nRóżnica od najdłuższego dnia: {(longDay-DayLength).ToString("h'h 'm'm 's's'")}\nRóżnica od najkrótszego dnia: {(DayLength-shortDay).ToString("h'h 'm'm 's's'")}\n\nPodawane w czasie UTC (Polska jest +1 ze względu na zmiane czasu)";
                 lbl.Text = t;
 
             }
